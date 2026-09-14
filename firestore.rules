@@ -1,0 +1,98 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.role == "Administrator";
+    }
+
+    function isTeacher() {
+      return signedIn() &&
+        (request.auth.token.role == "Teacher" ||
+         request.auth.token.role == "Class Teacher" ||
+         request.auth.token.role == "Administrator");
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && (uid == request.auth.uid || isAdmin());
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /learners/{id} {
+      allow read: if isTeacher();
+      allow create, update: if isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    match /marks/{id} {
+      allow read: if isTeacher();
+      allow create, update: if isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    match /teachers/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /subjects/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /grades/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /classes/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /rubric_levels/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /terms/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /academic_years/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /report_cards/{id} {
+      allow read, create, update: if isTeacher();
+      allow delete: if isAdmin();
+    }
+
+    match /notifications/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /resources/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /school_settings/{id} {
+      allow read: if isTeacher();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /audit_logs/{id} {
+      allow read: if isAdmin();
+      allow create: if signedIn();
+      allow update, delete: if false;
+    }
+  }
+}

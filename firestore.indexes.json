@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "marks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "academicYearId", "order": "ASCENDING"},
+        {"fieldPath": "termId", "order": "ASCENDING"},
+        {"fieldPath": "learnerId", "order": "ASCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "marks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "subjectId", "order": "ASCENDING"},
+        {"fieldPath": "academicYearId", "order": "ASCENDING"},
+        {"fieldPath": "termId", "order": "ASCENDING"}
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
